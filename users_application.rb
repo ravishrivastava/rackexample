@@ -1,12 +1,16 @@
 class UsersApplication
   def call(env)
-    if env["PATH_INFO"] == "" 
-      [200,{},[Database.users.to_s]]
+    response = Rack::Response.new
+    response.headers["Content-Type"] = "application/json" 
+   if env["PATH_INFO"] == "" 
+      response.write(JSON.generate(Database.users))
     elsif env["PATH_INFO"] =~ %r{/\d+}
       id = env["PATH_INFO"].split('/').last.to_i 
-      [200,{},[Database.users[id].to_s]]
+      response.write(JSON.generate(Database.users[id]))
     else
-      [404,{},["Nothing here!"]]
+      response.status = 404
+      response.write("Nothing here!")
     end
+    response.finish
   end
 end
