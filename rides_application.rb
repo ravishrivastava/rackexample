@@ -1,5 +1,4 @@
 require 'json'
-require_relative 'application_helpers'
 class RidesApplication
   include ApplicationHelpers
 

@@ -1,5 +1,3 @@
-
-require_relative 'application_helpers'
 class UsersApplication
   include ApplicationHelpers
   def call(env)
@@ -8,7 +6,7 @@ class UsersApplication
     response.headers["Content-Type"] = "application/json" 
     case request.path_info
     when  ""
-      response.write(JSON.generate(Database.users))
+      get_all_users(request,response)
     when  %r{/\d+}
       get_a_user(request,response)
     else
@@ -19,12 +17,16 @@ class UsersApplication
 
   def get_a_user(request,response)
       id = request.path_info.split('/').last.to_i 
-      user = Database.users[id]
+      user = Database.users(request.env["rides_app.user_id"])[id]
       if user.nil?
 	error(response,"No user with id #{id}",404)
       else     
 	response_with_object(response,user)
       end
+  end
+  
+  def get_all_users(request,response)
+    response_with_object(response,Database.users(request.env["rides_app.user_id"]))
   end
 
 end
