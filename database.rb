@@ -4,13 +4,13 @@ class Database
     2 => {id: 2,name: 'Sanjeev' , Bike: 'Pulsar',api_key: "abcd"}
   }
 
-  def self.users(user_id)
+  def users(user_id)
     USERS.select do |id, _|
       id == user_id
     end
   end
 
-  def self.add_ride(ride)
+  def add_ride(ride)
     RIDES[RIDES.keys.length+1] =  ride
   end
 
@@ -19,11 +19,11 @@ class Database
     2 => {user_id: 2,title: 'Evening Commute' , date: '2016-02-02'}
   }
 
-  def self.rides
+  def rides
     RIDES
   end
   
-  def self.user_by_api_key(key)
+  def user_by_api_key(key)
     USERS.values.find do |user|
       user[:api_key] = key
     end

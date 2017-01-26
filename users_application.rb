@@ -1,5 +1,10 @@
 class UsersApplication
   include ApplicationHelpers
+  
+  def initialize(database)
+    @database = database
+  end
+
   def call(env)
     request = Rack::Request.new(env)
     response = Rack::Response.new
@@ -26,7 +31,7 @@ class UsersApplication
   end
   
   def get_all_users(request,response)
-    response_with_object(response,Database.users(request.env["rides_app.user_id"]))
+    response_with_object(response,@database.users(request.env["rides_app.user_id"]))
   end
 
 end
